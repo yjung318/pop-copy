@@ -25,17 +25,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 # handler = Mangum(app)
-origins = [
-    "http://localhost:3001",
-    "http://localhost:3000",
-    "https://localhost:8000",
-    "http://localhost",
-    "http://localhost:8080",
-]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
