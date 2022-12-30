@@ -20,11 +20,18 @@ import warnings
 warnings.filterwarnings("ignore")
 
 from fastapi import FastAPI
-# from mangum import Mangum
 from fastapi.middleware.cors import CORSMiddleware
+# from mangum import Mangum
 
 app = FastAPI()
 # handler = Mangum(app)
+
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:3000",
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -51,6 +58,7 @@ def api_function(country, year):
     
     #Changes the country names to lowercase.
     df['country_name'] = df['country_name'].apply(lambda row: row.lower())
+    country = country.lower()
     
     #All unique country names are stored into this list.
     lists = df['country_name'].unique().tolist()
@@ -81,11 +89,10 @@ def api_function(country, year):
                 actual=int(df.loc[i, 'population']) 
         print(f"\nThis model predicts that {country.capitalize()}\'s population in {year} is/will be {result:,d} people!")
         print(f"According to \"worldbank.org\" {country.capitalize()}\'s population in {year} was actually {actual:,d} people!")
-    x = {
+    x = [{
         "predicted": result,
-        "actual": actual}
-    y = json.dumps(x)
-    return(y)
+        "actual": actual}]
+    return(x)
 def main():
     country = "japan"
     year = 2003
